@@ -29,23 +29,23 @@
         <h1>Опрос для владельцев кошек</h1>
         <div class="contacts">
             <label for="name">Кличка питомца:</label>
-            <input type="text" required title="Введите кличку буквами русского или латинского алфавита"
+            <input type="text" id="nameCat" required title="Введите кличку буквами русского или латинского алфавита"
                 pattern="[A-Za-zА-Яа-яЁё]{1,}">
         </div>
         <div class="contacts">
             <label for="nameOfOwner">Имя владельца:</label>
-            <input type="text" name="nameOfOwner" required title="Введите имя буквами русского или латинского алфавита"
-                pattern="[A-Za-zА-Яа-яЁё]{1,}">
+            <input type="text" id="nameOwner" name="nameOfOwner" required
+                title="Введите имя буквами русского или латинского алфавита" pattern="[A-Za-zА-Яа-яЁё]{1,}">
         </div>
         <div class="contacts">
             <label for="telephone">Контакты владельца:</label>
-            <input type="text" name="telephone" placeholder="+7-xxx-xxx-xx-xx" required
+            <input type="text" id="tel" name="telephone" placeholder="+7-xxx-xxx-xx-xx" required
                 title="Введите телефон в формате +7-xxx-xxx-xx-xx, где вместо х должна быть цифра"
                 pattern="\+7\-[0-9]{3}\-[0-9]{3}\-[0-9]{2}\-[0-9]{2}">
         </div>
         <div>
             <p>Выберете породу питомца:</p>
-            <select required>
+            <select required id="formCat">
                 <option selected disabled value="">Выберете...</option>
                 <option value="Maine Coon">Мейн-кун</option>
                 <option value="British cat">Британская кошка</option>
@@ -56,25 +56,69 @@
         </div>
         <div>
             <p>Что кушает питомец? Можно выбрать несколько вариантов</p>
-            <input type="checkbox" name="food" checked>Сухой корм<br>
-            <input type="checkbox" name="food1">Влажный корм<br>
-            <input type="checkbox" name="food2">Натуральный корм<br>
+            <input type="checkbox" name="food" value="Сухой корм" checked>Сухой корм<br>
+            <input type="checkbox" name="food" value="Влажный корм">Влажный корм<br>
+            <input type="checkbox" name="food" value="Натуральный корм">Натуральный корм<br>
         </div>
         <div>
             <p>Пол питомца:</p>
-            <input type="radio" name="sex" required>Самец<br>
-            <input type="radio" name="sex" required>Самка<br>
+            <input type="radio" name="gender" value='Самец' required>Самец<br>
+            <input type="radio" name="gender" value='Самка' required>Самка<br>
         </div>
         <div>
             <p>Комментарии:</p>
-            <textarea required cols="100" rows="15"></textarea>
+            <textarea required cols="100" id="comment" rows="15"></textarea>
         </div>
         <div class="form_footer">
             <p>Ждем фото Вашего питомца</p>
-            <input type="file" required>
-            <button type="submit">Сохранить</button>
+            <input type="file" id="photo" required>
+            <button type="button" id="btn">Сохранить</button>
         </div>
     </form>
+    <script>
+        'use strict'
+        class Cat {
+            constructor(nameCat, nameOwner, tel, formCat, food, gender, comment, photo) {
+                this.nameCat = nameCat;
+                this.nameOwner = nameOwner;
+                this.tel = tel;
+                this.formCat = formCat;
+                this.food = food;
+                this.gender = gender;
+                this.comment = comment;
+                this.photo = photo;
+            }
+        }
+        const nameCat = document.getElementById('nameCat');
+        const nameOwner = document.getElementById('nameOwner');
+        const tel = document.getElementById('tel');
+        const formCat = document.getElementById('formCat');
+        const foodInput = document.getElementsByName('food');
+        const genderInput = document.getElementsByName('gender');
+        const comment = document.getElementById('comment');
+        const photo = document.getElementById('photo');
+        const btn = document.getElementById('btn');
+
+        btn.addEventListener('click', function () {
+            //получаем значение из checkbox
+            let food = '';
+            for (let i = 0; i < foodInput.length; i++) {
+                if (foodInput[i].checked) {
+                    food += foodInput[i].value + ';';
+                }
+            }
+            //получаем значение из radio
+            let gender = '';
+            for (let i = 0; i < genderInput.length; i++) {
+                if (genderInput[i].checked) {
+                    gender += genderInput[i].value;
+                }
+            }
+            const newPet = new Cat(nameCat.value, nameOwner.value, tel.value, formCat.value, food, gender,
+                comment.value, photo.value)
+            console.log(newPet);
+        })
+    </script>
 </body>
 
 </html>
