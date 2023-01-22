@@ -25,7 +25,7 @@
 </head>
 
 <body>
-    <form action="#">
+    <form id="formElem" action="#">
         <h1>Опрос для владельцев кошек</h1>
         <div class="contacts">
             <label for="name">Кличка питомца:</label>
@@ -99,7 +99,8 @@
         const photo = document.getElementById('photo');
         const btn = document.getElementById('btn');
 
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', function (event) {
+            event.preventDefault();
             //получаем значение из checkbox
             let food = '';
             for (let i = 0; i < foodInput.length; i++) {
@@ -117,6 +118,15 @@
             const newPet = new Cat(nameCat.value, nameOwner.value, tel.value, formCat.value, food, gender,
                 comment.value, photo.value)
             console.log(newPet);
+            fetch("https://httpbin.org/post", {
+                    method: 'POST',
+                    body: new FormData(formElem)
+                })
+                .then(response => response.json())
+                .then(user => {
+                    console.log(user);
+                })
+                .catch(error => console.log(error));
         })
     </script>
 </body>
